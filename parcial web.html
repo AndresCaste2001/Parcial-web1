@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulario de Gustos</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f1f1f1;
+        }
+
+        #formContainer {
+            background-color: #ffffff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            width: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #888;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div id="formContainer">
+        <h1 style="text-align: center;">Formulario de Gustos</h1>
+
+        <form id="gustosForm">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre"><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email"><br><br>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono"><br><br>
+
+            <label for="gusto">Gusto:</label>
+            <input type="text" id="gusto" name="gusto">
+            <button type="button" onclick="agregarGusto()">Agregar Gusto</button>
+        </form>
+
+        <br>
+
+        <table id="gustosTable">
+            <thead>
+                <tr>
+                    <th>Gusto</th>
+                    <th>Porcentaje</th>
+                    <th>Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se insertarán dinámicamente las filas -->
+            </tbody>
+        </table>
+
+        <script>
+            function agregarGusto() {
+                var gusto = document.getElementById("gusto").value;
+                var table = document.getElementById("gustosTable").getElementsByTagName('tbody')[0];
+                var newRow = table.insertRow(table.rows.length);
+
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+
+                cell1.innerHTML = gusto;
+                cell2.innerHTML = "<input type='text' value='100%'>";
+                cell3.innerHTML = "<a href='#' onclick='editarFila(this)'>Editar</a>";
+            }
+
+            function editarFila(link) {
+                var row = link.parentNode.parentNode;
+                var cells = row.getElementsByTagName('td');
+                for (var i = 0; i < cells.length - 1; i++) {
+                    var content = cells[i].innerHTML;
+                    if (i === 0) {
+                        cells[i].innerHTML = "<input type='text' value='" + content + "'>";
+                    } else {
+                        cells[i].innerHTML = "<input type='text' value='" + content.trim() + "'>";
+                    }
+                }
+                cells[cells.length - 1].innerHTML = "<a href='#' onclick='guardarEdicion(this)'>Guardar</a>";
+            }
+
+            function guardarEdicion(link) {
+                var row = link.parentNode.parentNode;
+                var cells = row.getElementsByTagName('td');
+                for (var i = 0; i < cells.length - 1; i++) {
+                    var content = cells[i].getElementsByTagName('input')[0].value;
+                    cells[i].innerHTML = content;
+                }
+                cells[cells.length - 1].innerHTML = "<a href='#' onclick='editarFila(this)'>Editar</a>";
+            }
+        </script>
+    </div>
+</body>
+</html>
